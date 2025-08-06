@@ -86,6 +86,28 @@ public class TaskService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
+    public APIResponse updateTask(Long id, TaskRequestDTO dto) {
+        try {
+            Optional<Task> existingTask = taskRepository.findById(id);
+            if (existingTask.isEmpty()) {
+                return new APIResponse("Task not found", true, HttpStatus.NOT_FOUND);
+            }
+
+            Task task = existingTask.get();
+            task.setTitle(dto.getTitle());
+            task.setDescription(dto.getDescription());
+            task.setStatus(dto.getStatus());
+            taskRepository.save(task);
+
+            return new APIResponse("Task updated successfully", convertToResponse(task), false, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new APIResponse("Error updating task", true, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     private TaskResponseDTO convertToResponse(Task task) {
         TaskResponseDTO dto = new TaskResponseDTO();
         dto.setId(task.getId());

@@ -41,4 +41,11 @@ public class PetController {
         APIResponse response = petService.delete(id);
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse> updatePet(@PathVariable Long id,
+                                                 @RequestBody PetRequestDTO dto) {
+        APIResponse response = petService.updatePet(id, dto);
+        return new ResponseEntity<>(response, response.getStatus());
+    }
 }

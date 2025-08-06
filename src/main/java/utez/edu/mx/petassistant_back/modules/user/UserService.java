@@ -93,6 +93,28 @@ public class UserService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
+    public APIResponse updateUser(Long id, UserRequestDTO dto) {
+        try {
+            Optional<BeanUser> existingUser = userRepository.findById(id);
+            if (existingUser.isEmpty()) {
+                return new APIResponse("User not found", true, HttpStatus.NOT_FOUND);
+            }
+
+            BeanUser user = existingUser.get();
+            user.setName(dto.getName());
+            user.setEmail(dto.getEmail());
+            user.setPassword(dto.getPassword());
+            userRepository.save(user);
+
+            return new APIResponse("User updated successfully", user, false, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new APIResponse("Error updating user", true, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     private UserResponseDTO convertToResponse(BeanUser user) {
         UserResponseDTO dto = new UserResponseDTO();
         dto.setId(user.getId());

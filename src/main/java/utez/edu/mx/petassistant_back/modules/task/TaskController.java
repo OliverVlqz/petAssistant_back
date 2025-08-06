@@ -37,4 +37,11 @@ public class TaskController {
         APIResponse response = taskService.delete(id);
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse> updateTask(@PathVariable Long id,
+                                                  @RequestBody TaskRequestDTO dto) {
+        APIResponse response = taskService.updateTask(id, dto);
+        return new ResponseEntity<>(response, response.getStatus());
+    }
 }

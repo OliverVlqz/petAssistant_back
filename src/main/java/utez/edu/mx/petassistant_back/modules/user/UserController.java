@@ -37,4 +37,10 @@ public class UserController {
         APIResponse response = userService.delete(id);
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<APIResponse> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
+        APIResponse response = userService.updateUser(id, dto);
+        return new ResponseEntity<>(response, response.getStatus());
+    }
 }
