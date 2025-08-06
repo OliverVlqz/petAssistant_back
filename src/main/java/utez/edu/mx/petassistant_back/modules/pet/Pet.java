@@ -1,5 +1,7 @@
 package utez.edu.mx.petassistant_back.modules.pet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import utez.edu.mx.petassistant_back.modules.task.Task;
 import utez.edu.mx.petassistant_back.modules.user.BeanUser;
@@ -23,6 +25,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private BeanUser user;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,5 +1,6 @@
 package utez.edu.mx.petassistant_back.modules.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import utez.edu.mx.petassistant_back.modules.pet.Pet;
 
@@ -21,6 +22,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "pet_id", nullable = false)
+    @JsonIgnore
     private Pet pet;
 
     public Task() {

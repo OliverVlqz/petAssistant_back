@@ -87,6 +87,28 @@ public class PetService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class, Exception.class})
+    public APIResponse updatePet(Long id, PetRequestDTO dto) {
+        try {
+            Optional<Pet> existingPet = petRepository.findById(id);
+            if (existingPet.isEmpty()) {
+                return new APIResponse("Pet not found", true, HttpStatus.NOT_FOUND);
+            }
+
+            Pet pet = existingPet.get();
+            pet.setName(dto.getName());
+            pet.setDescription(dto.getDescription());
+            pet.setImage(dto.getImage());
+            petRepository.save(pet);
+
+            return new APIResponse("Pet updated successfully", convertToResponse(pet), false, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new APIResponse("Error updating pet", true, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     private PetResponseDTO convertToResponse(Pet pet) {
         PetResponseDTO dto = new PetResponseDTO();
         dto.setId(pet.getId());
