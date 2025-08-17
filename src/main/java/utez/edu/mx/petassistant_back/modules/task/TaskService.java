@@ -51,6 +51,27 @@ public class TaskService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public APIResponse findByPetId(Long petId) {
+        try {
+            // Verificar que la mascota existe
+            Optional<Pet> petOpt = petRepository.findById(petId);
+            if (petOpt.isEmpty()) {
+                return new APIResponse("Pet not found", true, HttpStatus.NOT_FOUND);
+            }
+
+            List<TaskResponseDTO> tasks = taskRepository.findByPetId(petId)
+                    .stream()
+                    .map(this::convertToResponse)
+                    .collect(Collectors.toList());
+            
+            return new APIResponse("Tasks retrieved successfully for pet ID: " + petId, tasks, false, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new APIResponse("Error retrieving tasks for pet", true, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @Transactional(rollbackFor = {SQLException.class, Exception.class})
     public APIResponse create(TaskRequestDTO dto) {
         try {
@@ -113,8 +134,11 @@ public class TaskService {
         dto.setId(task.getId());
         dto.setTitle(task.getTitle());
         dto.setDescription(task.getDescription());
+        dto.setCategory(task.getCategory());
+        dto.setPriority(task.getPriority());
         dto.setStatus(task.getStatus());
         dto.setPetId(task.getPet().getId());
+
         return dto;
     }
 }

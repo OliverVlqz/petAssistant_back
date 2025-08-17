@@ -28,4 +28,5 @@ public class PetRequestDTO {
     public void setImage(String image) {
         this.image = image;
     }
+
 }

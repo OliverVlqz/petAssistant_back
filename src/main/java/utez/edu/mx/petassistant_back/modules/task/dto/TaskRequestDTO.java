@@ -3,8 +3,9 @@ package utez.edu.mx.petassistant_back.modules.task.dto;
 public class TaskRequestDTO {
     private String title;
     private String description;
+    private String category;
+    private String priority;
     private String status;
-    private Long petId;
 
     public String getTitle() {
         return title;
@@ -22,6 +23,22 @@ public class TaskRequestDTO {
         this.description = description;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -37,4 +54,8 @@ public class TaskRequestDTO {
     public void setPetId(Long petId) {
         this.petId = petId;
     }
+
+    private Long petId;
+
+
 }

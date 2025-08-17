@@ -9,7 +9,7 @@ import utez.edu.mx.petassistant_back.utils.APIResponse;
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "*")
-public class TaskController {
+public class  TaskController {
 
     @Autowired
     private TaskService taskService;
@@ -23,6 +23,12 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse> getTaskById(@PathVariable Long id) {
         APIResponse response = taskService.findById(id);
+        return new ResponseEntity<>(response, response.getStatus());
+    }
+
+    @GetMapping("/pet/{petId}")
+    public ResponseEntity<APIResponse> getTasksByPetId(@PathVariable Long petId) {
+        APIResponse response = taskService.findByPetId(petId);
         return new ResponseEntity<>(response, response.getStatus());
     }
 
